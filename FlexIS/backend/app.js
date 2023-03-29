@@ -1,9 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const Post = require("./models/post");
-const employee = require("./models/employee");
+//const Post = require("./models/post");
+//const employee = require("./models/employee");
 const employeeController = require("./controllers/employeeController");
+const departmentController = require("./controllers/departmentController");
 
 const app = express();
 
@@ -45,17 +46,17 @@ app.get("/api/department/:id", departmentController.getDepartment);
 app.delete("/api/department/:id", departmentController.deleteDepartment);
 app.put("/api/department/:id", departmentController.updateDepartment);
 
-app.post("/api/post", (req, res, next) => {
-  const post = new Post({
-    title: req.body.title,
-    content: req.body.content,
-  });
+// app.post("/api/post", (req, res, next) => {
+//   const post = new Post({
+//     title: req.body.title,
+//     content: req.body.content,
+//   });
 
-  console.log(post);
-  res.status(201).json({
-    message: "Post added successfully",
-  });
-});
+//   console.log(post);
+//   res.status(201).json({
+//     message: "Post added successfully",
+//   });
+// });
 // const app = express();
 // app.use((req,res,next)=>{
 //   console.log('first middleware');

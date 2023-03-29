@@ -1,12 +1,13 @@
-const Employee = require("./models/employee");
+const Employee = require("../models/employee");
 
-module.exports = {
-  addEmployee,
-  getAllEmployee,
-  getEmployee,
-  deleteEmployee,
-  updateEmployee,
-};
+
+// module.exports = {
+//   addEmployee,
+//   getAllEmployee,
+//   getEmployee,
+//   deleteEmployee,
+//   updateEmployee,
+// };
 
 exports.addEmployee = (req, res, next) => {
   const employee = new Employee({
@@ -20,7 +21,7 @@ exports.addEmployee = (req, res, next) => {
   });
   employee.save().then((createdEmployee) => {
     res.status(201).json({
-      message: "Employee added successfully-",
+      message: "Employee added successfully",
       employeeId: createdEmployee.id,
     });
   });

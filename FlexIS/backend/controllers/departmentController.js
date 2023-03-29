@@ -1,12 +1,12 @@
-const Department = require("./models/department");
+const Department = require("../models/department");
 
-module.exports = {
-  addDepartment,
-  getAllDepartment,
-  getDepartment,
-  deleteDepartment,
-  updateDepartment,
-};
+// module.exports = {
+//   addDepartment,
+//   getAllDepartment,
+//   getDepartment,
+//   deleteDepartment,
+//   updateDepartment,
+// };
 
 exports.addDepartment = (req, res, next) => {
   const department = new Department({
