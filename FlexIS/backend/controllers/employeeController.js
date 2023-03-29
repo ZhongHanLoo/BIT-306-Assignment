@@ -16,6 +16,7 @@ exports.addEmployee = (req, res, next) => {
     position: req.body.position,
     email: req.body.email,
     fwaStatus: req.body.fwaStatus,
+    department: req.body.department.departmentId,
   });
   employee.save().then((createdEmployee) => {
     res.status(201).json({
@@ -26,7 +27,7 @@ exports.addEmployee = (req, res, next) => {
 };
 
 exports.getAllEmployee = (req, res, next) => {
-  Employee.find().then((documents) => {
+  Employee.find().populate('department').then((documents) => {
     res.status(200).json({
       message: "Employees fetched successfully",
       employees: documents,
@@ -35,7 +36,7 @@ exports.getAllEmployee = (req, res, next) => {
 };
 
 exports.getEmployee = (req, res, next) => {
-  Employee.findById(req.params.id).then((employee) => {
+  Employee.findById(req.params.id).populate('department').then((employee) => {
     res.status(200).json({
       message: "Employee fetched successfully",
       employee: employee,
