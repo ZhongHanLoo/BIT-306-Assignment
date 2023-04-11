@@ -72,4 +72,28 @@ export class FwaRequestService {
       `http://localhost:3000/api/getRejectedFwaRequestForSupervisor/${employee_id}`,
     );
   }
+
+  public getDepartmentFlexiHours(department_id: String): Observable<any> {
+    return this.http.get<any>(
+      `http://localhost:3000/api/getDepartmentFlexiHours/${department_id}`,
+    );
+  }
+
+  public getDepartmentWorkFromHome(department_id: String): Observable<any> {
+    return this.http.get<any>(
+      `http://localhost:3000/api/getDepartmentWorkFromHome/${department_id}`,
+    );
+  }
+
+  public getDepartmentHybrid(department_id: String): Observable<any> {
+    return this.http.get<any>(
+      `http://localhost:3000/api/getDepartmentHybrid/${department_id}`,
+    );
+  }
+
+  public getDepartmentRequest(department_id: String): Observable<any> {
+    return this.http.get<any>(
+      `http://localhost:3000/api/getDepartmentRequest/${department_id}`,
+    );
+  }
 }

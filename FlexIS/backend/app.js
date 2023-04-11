@@ -59,6 +59,11 @@ app.get("/api/getFwaRequestByEmployee/:id", fwaRequestController.getFwaRequestBy
 app.get("/api/getPendingFwaRequestForSupervisor/:id", fwaRequestController.getPendingFwaRequestForSupervisor);
 app.get("/api/getAcceptedFwaRequestForSupervisor/:id", fwaRequestController.getAcceptedFwaRequestForSupervisor);
 app.get("/api/getRejectedFwaRequestForSupervisor/:id", fwaRequestController.getRejectedFwaRequestForSupervisor);
+app.get("/api/getDepartmentFlexiHours/:id", fwaRequestController.getDepartmentFlexiHours);
+app.get("/api/getDepartmentWorkFromHome/:id", fwaRequestController.getDepartmentWorkFromHome);
+app.get("/api/getDepartmentHybrid/:id", fwaRequestController.getDepartmentHybrid);
+app.get("/api/getDepartmentRequest/:id", fwaRequestController.getDepartmentRequest);
+
 
 app.post("/api/dailySchedule", dailyScheduleController.addDailySchedule);
 app.get("/api/dailySchedule", dailyScheduleController.getAllDailySchedule);

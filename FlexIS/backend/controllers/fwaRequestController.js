@@ -178,3 +178,90 @@ exports.getRejectedFwaRequestForSupervisor = (req, res, next) => {
       });
     });
 };
+
+exports.getDepartmentFlexiHours = (req, res, next) => {
+  Employee.find({
+    department: req.params.id,
+  })
+    .populate("fwaRequestList")
+    .then((documents) => {
+      const fwaRequests = [];
+      documents.forEach((employee) => {
+        employee.fwaRequestList.forEach((request) => {
+          if (request.workType == "flexi-hour") {
+            fwaRequests.push(request);
+          }
+        });
+      });
+      res.status(200).json({
+        message: "Flexi Hours FWA requests fetched successfully",
+        fwaRequests: fwaRequests,
+      });
+    });
+};
+
+exports.getDepartmentWorkFromHome = (req, res, next) => {
+  Employee.find({
+    department: req.params.id,
+  })
+    .populate("fwaRequestList")
+    .then((documents) => {
+      const fwaRequests = [];
+      documents.forEach((employee) => {
+        employee.fwaRequestList.forEach((request) => {
+          if (request.workType == "work-from-home") {
+            fwaRequests.push(request);
+          }
+        });
+      });
+      res.status(200).json({
+        message: "Work From Home FWA requests fetched successfully",
+        fwaRequests: fwaRequests,
+      });
+    });
+};
+
+exports.getDepartmentHybrid = (req, res, next) => {
+  Employee.find({
+    department: req.params.id,
+  })
+    .populate("fwaRequestList")
+    .then((documents) => {
+      const fwaRequests = [];
+      documents.forEach((employee) => {
+        employee.fwaRequestList.forEach((request) => {
+          if (request.workType == "hybrid") {
+            fwaRequests.push(request);
+          }
+        });
+      });
+      res.status(200).json({
+        message: "Hybrid FWA requests fetched successfully",
+        fwaRequests: fwaRequests,
+      });
+    });
+};
+
+exports.getDepartmentRequest = (req, res, next) => {
+  Employee.find({
+    department: req.params.id,
+  })
+    .populate({
+      path: "fwaRequestList",
+      populate: {
+        path: "employee",
+      },
+    })
+    .then((documents) => {
+      const fwaRequests = [];
+      documents.forEach((employee) => {
+        employee.fwaRequestList.forEach((request) => {
+          fwaRequests.push(request);
+        });
+      });
+      res.status(200).json({
+        message: "Department FWA requests fetched successfully",
+        fwaRequests: fwaRequests,
+      });
+    });
+};

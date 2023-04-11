@@ -1,1 +1,143 @@
-<p>fwa-analytics works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>FWA Analytics</mat-card-title>
+    <mat-card-subtitle>View FWA Analytics</mat-card-subtitle>
+  </mat-card-header>
+  <br />
+
+  <mat-card-content>
+    <h2 class="content-header">FWA Analytics Table</h2>
+    <div class="body-content">
+      <mat-form-field class="full-width">
+        <mat-label>Search...</mat-label>
+        <input matInput (keyup)="applyFilter($event)" #input />
+      </mat-form-field>
+      <div class="table">
+        <table mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="departmentId">
+            <th mat-header-cell *matHeaderCellDef>Department ID</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.departmentId }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="flexiHours">
+            <th mat-header-cell *matHeaderCellDef>Flexi Hours</th>
+            <td mat-cell *matCellDef="let element">{{ element.flexiHours }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="workFromHome">
+            <th mat-header-cell *matHeaderCellDef>Work From Home</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.workFromHome }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="hybrid">
+            <th mat-header-cell *matHeaderCellDef>Hybrid</th>
+            <td mat-cell *matCellDef="let element">{{ element.hybrid }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let element">
+              <button
+                mat-raised-button
+                color="primary"
+                style="margin-right: 8px"
+                (click)="getSelectedDepartment(element)"
+                [disabled]="employee.userType !== 'Admin'"
+              >
+                Select
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No result that matches "{{ input.value }}"
+            </td>
+          </tr>
+        </table>
+
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 20, 50, 100]"
+          showFirstLastButtons
+        >
+        </mat-paginator>
+      </div>
+    </div>
+    <br />
+
+    <h2 class="content-header">{{selectedDepartment.name}} FWA Request List</h2>
+    <div class="body-content">
+      <mat-form-field class="full-width">
+        <mat-label>Search...</mat-label>
+        <input matInput (keyup)="applyFilterRequest($event)" #inputRequest />
+      </mat-form-field>
+      <div class="table">
+        <table mat-table [dataSource]="requestDataSource">
+          <ng-container matColumnDef="requestId">
+            <th mat-header-cell *matHeaderCellDef>Request ID</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.requestId }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.requestDate | date : "shortDate"}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="workType">
+            <th mat-header-cell *matHeaderCellDef>WorkType</th>
+            <td mat-cell *matCellDef="let element">{{ element.workType }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="employee">
+            <th mat-header-cell *matHeaderCellDef>Employee</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.employee.employeeId }} - {{element.employee.name}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="requestDisplayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: requestDisplayedColumns"
+          ></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No result that matches "{{ inputRequest.value }}"
+            </td>
+          </tr>
+        </table>
+
+        <mat-paginator
+          RequestMatPaginator
+          [pageSizeOptions]="[5, 10, 20, 50, 100]"
+          showFirstLastButtons
+        >
+        </mat-paginator>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
