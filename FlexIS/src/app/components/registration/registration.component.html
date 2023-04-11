@@ -1,54 +1,63 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>Registration</mat-card-title>
-    <mat-card-subtitle>Register user to FlexIS</mat-card-subtitle>
+    <mat-card-subtitle>Register employee to FlexIS</mat-card-subtitle>
   </mat-card-header>
   <br />
 
-  <form class="body-content">
-
-
-    <mat-form-field class="full-width">
-      <mat-label>ID</mat-label>
-      <input
-        matInput
-        name="id"
-
-        [(ngModel)]="department.departmentId"
-      />
-
-
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Name</mat-label>
-      <input
-        matInput
-        name="name"
-
-        [(ngModel)]="department.name"
-      />
-    </mat-form-field>
-
-    <button
-
-      color="primary"
-      (click)="createDepartment()"
-    >
-      Create department
-    </button>
-  </form>
-
-  <!-- <mat-card-content>
+  <mat-card-content>
     <h2 class="content-header">Register New User</h2>
     <form class="body-content">
       <mat-form-field class="full-width">
-        <mat-label>Favorite food</mat-label>
-        <mat-select [(ngModel)]="selectedDepartment">
-          <mat-option *ngFor="let department of departments" [value]="department">
-            {{ department.id }} {{department.name}}
+        <mat-label>Department</mat-label>
+        <mat-select
+          [(ngModel)]="newUser.department"
+          (selectionChange)="onDepartmentChange()"
+          name="department"
+        >
+          <mat-option
+            *ngFor="let department of departments"
+            [value]="department"
+          >
+            {{ department.departmentId }} - {{ department.name }}
           </mat-option>
         </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Employee ID</mat-label>
+        <input
+          matInput
+          [formControl]="employeeIdFormControl"
+          [(ngModel)]="newUser.employeeId"
+        />
+        <mat-error *ngIf="employeeIdFormControl.hasError('required')">
+          Employee ID is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          [formControl]="nameFormControl"
+          [(ngModel)]="newUser.name"
+        />
+        <mat-error *ngIf="nameFormControl.hasError('required')">
+          Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Position</mat-label>
+        <input
+          matInput
+          [formControl]="positionFormControl"
+          [(ngModel)]="newUser.position"
+        />
+        <mat-error *ngIf="positionFormControl.hasError('required')">
+          Position is <strong>required</strong>
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field class="full-width">
@@ -72,11 +81,14 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>User Type</mat-label>
-        <mat-select name="userType" [(value)]="newUser.userType">
-          <mat-option *ngFor="let userType of userTypes" [value]="userType">
-            {{ userType }}
+      <mat-form-field class="full-width">
+        <mat-label>Supervisor</mat-label>
+        <mat-select [(ngModel)]="selectedSupervisor" name="supervisor">
+          <mat-option
+            *ngFor="let supervisor of supervisorList"
+            [value]="supervisor"
+          >
+            {{ supervisor.employeeId }} - {{ supervisor.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -92,17 +104,17 @@
     </form>
     <br />
 
-    <h2 class="content-header">User List</h2>
+    <h2 class="content-header">Employee List</h2>
     <div class="body-content">
       <mat-form-field class="full-width">
-        <mat-label>Search User</mat-label>
+        <mat-label>Search Employee</mat-label>
         <input matInput (keyup)="applyFilter($event)" #input />
       </mat-form-field>
       <div class="table">
         <table mat-table [dataSource]="dataSource">
-          <ng-container matColumnDef="userId">
+          <ng-container matColumnDef="employeeId">
             <th mat-header-cell *matHeaderCellDef>User ID</th>
-            <td mat-cell *matCellDef="let element">{{ element.userId }}</td>
+            <td mat-cell *matCellDef="let element">{{ element.employeeId }}</td>
           </ng-container>
 
           <ng-container matColumnDef="name">
@@ -115,12 +127,26 @@
             <td mat-cell *matCellDef="let element">{{ element.email }}</td>
           </ng-container>
 
+          <ng-container matColumnDef="department">
+            <th mat-header-cell *matHeaderCellDef>Department</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.department.name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef>Position</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.position }}
+            </td>
+          </ng-container>
+
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
           <tr class="mat-row" *matNoDataRow>
             <td class="mat-cell" colspan="4">
-              No user that matches "{{ input.value }}"
+              No employee that matches "{{ input.value }}"
             </td>
           </tr>
         </table>
@@ -132,5 +158,5 @@
         </mat-paginator>
       </div>
     </div>
-  </mat-card-content> -->
+  </mat-card-content>
 </mat-card>

@@ -1,14 +1,6 @@
 const Department = require("../models/department");
 
-// module.exports = {
-//   addDepartment,
-//   getAllDepartment,
-//   getDepartment,
-//   deleteDepartment,
-//   updateDepartment,
-// };
-
-exports.addDepartment = (req, res, next) => {
+module.exports.addDepartment = (req, res, next) => {
   const department = new Department({
     departmentId: req.body.departmentId,
     name: req.body.name,
@@ -16,7 +8,7 @@ exports.addDepartment = (req, res, next) => {
   department.save().then((createdDepartment) => {
     res.status(201).json({
       message: "Department added successfully-",
-      departmentId: createdDepartment.id,
+      department: createdDepartment,
     });
   });
 };
@@ -49,12 +41,12 @@ exports.deleteDepartment = (req, res, next) => {
 };
 
 exports.updateDepartment = (req, res, next) => {
-  const department = new Department({
+  const department = new {
     departmentId: req.body.departmentId,
     name: req.body.name,
-  });
+  };
 
-  Department.updateOne({ _id: req.params.id }, department).then((result) => {
+  Department.updateOne({ _id: req.body._id }, department).then((result) => {
     console.log(result);
     res.status(200).json({ message: "Department update successfully" });
   });

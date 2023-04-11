@@ -1,10 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-//const Post = require("./models/post");
-//const employee = require("./models/employee");
 const employeeController = require("./controllers/employeeController");
 const departmentController = require("./controllers/departmentController");
+const fwaRequestController = require("./controllers/fwaRequestController");
+const dailyScheduleController = require("./controllers/dailyScheduleController");
+
 
 const app = express();
 
@@ -12,7 +13,7 @@ app.use(bodyParser.json());
 
 mongoose
   .connect(
-    "mongodb+srv://han:test@cluster0.6d8jju7.mongodb.net/node-angular?retryWrites=true&w=majority"
+    "mongodb+srv://zhonghanloo:FlexIS@cluster0.c0vnr6t.mongodb.net/FlexIS?retryWrites=true&w=majority"
   )
   .then(() => {
     console.log("connected to database");
@@ -29,7 +30,7 @@ app.use((req, res, next) => {
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
-    "GET, POST, PATCH, DELETE, OPTIONS"
+    "GET, POST, PATCH, DELETE, PUT, OPTIONS"
   );
   next();
 });
@@ -38,78 +39,28 @@ app.post("/api/employee", employeeController.addEmployee);
 app.get("/api/employee", employeeController.getAllEmployee);
 app.get("/api/employee/:id", employeeController.getEmployee);
 app.delete("/api/employee/:id", employeeController.deleteEmployee);
-app.put("/api/employee/:id", employeeController.updateEmployee);
+app.put("/api/employee/", employeeController.updateEmployee);
+app.get("/api/getSupervisorByDepartment/:id", employeeController.getSupervisorByDepartment);
+app.post("/api/login/", employeeController.login);
 
 app.post("/api/department", departmentController.addDepartment);
 app.get("/api/department", departmentController.getAllDepartment);
 app.get("/api/department/:id", departmentController.getDepartment);
 app.delete("/api/department/:id", departmentController.deleteDepartment);
-app.put("/api/department/:id", departmentController.updateDepartment);
+app.put("/api/department", departmentController.updateDepartment);
 
-// app.post("/api/post", (req, res, next) => {
-//   const post = new Post({
-//     title: req.body.title,
-//     content: req.body.content,
-//   });
+app.post("/api/fwaRequest", fwaRequestController.addFwaRequest);
+app.get("/api/fwaRequest", fwaRequestController.getAllFwaRequest);
+app.get("/api/fwaRequest/:id", fwaRequestController.getFwaRequest);
+app.delete("/api/fwaRequest/:id", fwaRequestController.deleteFwaRequest);
+app.put("/api/fwaRequest", fwaRequestController.updateFwaRequest);
+app.get("/api/getFwaRequestByEmployee/:id", fwaRequestController.getFwaRequestByEmployee);
+// app.get("/api/getNewestFwaRequest", fwaRequestController.getNewestFwaRequest);
 
-//   console.log(post);
-//   res.status(201).json({
-//     message: "Post added successfully",
-//   });
-// });
-// const app = express();
-// app.use((req,res,next)=>{
-//   console.log('first middleware');
-//   next();
-// })
-
-// app.use((req,res,next)=>{
-//   res.send("hello");
-
-// })
-
-// app.post("/api/posts", (req, res, next) => {
-//   const post = new Post({
-//     title: req.body.title,
-//     content: req.body.content,
-//   });
-//   post.save().then((createdPost) => {
-//     res.status(201).json({
-//       message: "Post added successfully-",
-//       postId: createdPost.id,
-//     });
-//   });
-// });
-
-// app.get("/api/posts", (req, res, next) => {
-//   Post.find().then((documents) => {
-//     res.status(200).json({
-//       message: "Post fetched successfully",
-//       posts: documents,
-//     });
-//   });
-// });
-
-// app.delete("/api/posts/:id", (req, res, next) => {
-//   Post.deleteOne({ _id: req.params.id }).then((result) => {
-//     console.log(result);
-//     res.status(200).json({
-//       message: "Post deleted!",
-//     });
-//   });
-// });
-
-// app.put("/api/posts/:id", (req, res, next) => {
-//   const post = new Post({
-//     _id: req.body.id,
-//     title: req.body.title,
-//     content: req.body.content,
-//   });
-
-//   Post.updateOne({ _id: req.params.id }, post).then((result) => {
-//     console.log(result);
-//     res.status(200).json({ message: " update successful" });
-//   });
-// });
+app.post("/api/dailySchedule", dailyScheduleController.addDailySchedule);
+app.get("/api/dailySchedule", dailyScheduleController.getAllDailySchedule);
+app.get("/api/dailySchedule/:id", dailyScheduleController.getDailySchedule);
+app.delete("/api/dailySchedule/:id", dailyScheduleController.deleteDailySchedule);
+app.put("/api/dailySchedule", dailyScheduleController.updateDailySchedule);
 
 module.exports = app;

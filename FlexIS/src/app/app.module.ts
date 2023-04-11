@@ -43,6 +43,11 @@ import { LoginComponent } from './components/login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { SubmitFWAComponent } from './components/submit-fwa/submit-fwa.component';
+import { ReviewFWAComponent } from './components/review-fwa/review-fwa.component';
+import { UpdateScheduleComponent } from './components/update-schedule/update-schedule.component';
+import { ReviewScheduleComponent } from './components/review-schedule/review-schedule.component';
+import { FwaAnalyticsComponent } from './components/fwa-analytics/fwa-analytics.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +57,12 @@ import { HttpClientModule } from '@angular/common/http';
     NavbarComponent,
     HomeComponent,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    SubmitFWAComponent,
+    ReviewFWAComponent,
+    UpdateScheduleComponent,
+    ReviewScheduleComponent,
+    FwaAnalyticsComponent
   ],
   imports: [
     BrowserModule,

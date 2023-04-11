@@ -1,0 +1,103 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>FWA request</mat-card-title>
+    <mat-card-subtitle>Submit FWA request</mat-card-subtitle>
+  </mat-card-header>
+  <br />
+
+  <mat-card-content>
+    <h2 class="content-header">Submit FWA request</h2>
+    <form class="body-content">
+      <mat-form-field class="full-width">
+        <mat-label>Work Type</mat-label>
+        <mat-select [(ngModel)]="newRequest.workType" name="workType">
+          <mat-option *ngFor="let workType of workTypes" [value]="workType">
+            {{ workType }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          [formControl]="descriptionFormControl"
+          [(ngModel)]="newRequest.description"
+        ></textarea>
+        <mat-error *ngIf="descriptionFormControl.hasError('required')">
+          Description is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Reason</mat-label>
+        <textarea
+          matInput
+          [formControl]="reasonFormControl"
+          [(ngModel)]="newRequest.reason"
+        ></textarea>
+        <mat-error *ngIf="reasonFormControl.hasError('required')">
+          Reason is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <button
+        [disabled]="descriptionFormControl.invalid || reasonFormControl.invalid"
+        mat-raised-button
+        color="primary"
+        (click)="confirmRequest($event)"
+      >
+        Submit FWA Request
+      </button>
+    </form>
+    <br />
+
+    <h2 class="content-header">FWA Request List</h2>
+    <div class="body-content">
+      <mat-form-field class="full-width">
+        <mat-label>Search FWA Request</mat-label>
+        <input matInput (keyup)="applyFilter($event)" #input />
+      </mat-form-field>
+      <div class="table">
+        <table mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="requestId">
+            <th mat-header-cell *matHeaderCellDef>Request ID</th>
+            <td mat-cell *matCellDef="let element">{{ element.requestId }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.requestDate | date : "shortDate" }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="workType">
+            <th mat-header-cell *matHeaderCellDef>Work Type</th>
+            <td mat-cell *matCellDef="let element">{{ element.workType }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No FWA request that matches "{{ input.value }}"
+            </td>
+          </tr>
+        </table>
+
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 20, 50, 100]"
+          showFirstLastButtons
+        >
+        </mat-paginator>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

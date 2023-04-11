@@ -1,8 +1,12 @@
+import { Employee } from "./employee";
+
 export interface DailySchedule {
-  id: String;
+  _id: String;
+  scheduleId: Number;
   date: Date;
   workLocation: String;
   workHours: String;
   workReport: String;
   supervisorComment: String;
+  employee: Employee;
 }

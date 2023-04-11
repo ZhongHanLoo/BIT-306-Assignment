@@ -7,7 +7,11 @@ const employeeSchema = mongoose.Schema({
   position: {type: String, required: true},
   email: {type: String, required: true},
   fwaStatus: {type: String, required: true},
-  department: { type: mongoose.Schema.Types.ObjectId, ref: 'Department', required: true }
+  department: { type: mongoose.Schema.Types.ObjectId, ref: 'Department', required: true },
+  userType: {type: String, required: true},
+  supervisingEmployee: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Employee' }],
+  fwaRequestList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'FwaRequest' }],
+  dailyScheduleList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'DailySchedule' }],
 });
 
 module.exports = mongoose.model('Employee', employeeSchema);
