@@ -9,6 +9,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { Subscription } from 'rxjs';
 import { FwaRequestService } from 'src/app/services/fwa-request.service';
 import { LoginService } from 'src/app/auth/login.service';
+import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
   selector: 'app-submit-fwa',
@@ -20,7 +21,8 @@ export class SubmitFWAComponent implements OnInit {
     public dialog: MatDialog,
     private snackbar: MatSnackBar,
     private fwaRequestService: FwaRequestService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private employeeService: EmployeeService
   ) {}
 
   workTypes: String[] = ['flexi-hour', 'work-from-home', 'hybrid'];
@@ -50,7 +52,6 @@ export class SubmitFWAComponent implements OnInit {
     },
   };
 
-
   displayedColumns: String[] = ['requestId', 'date', 'workType', 'status'];
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -61,12 +62,13 @@ export class SubmitFWAComponent implements OnInit {
   subscription!: Subscription;
   fwaRequestList: any;
   employee: any;
-  test:any;
+  test: any;
 
   ngOnInit(): void {
     this.subscription = this.loginService.getEmployee().subscribe((result) => {
-      this.newRequest.employee = result
-      console.log(result._id)
+      this.employee = result;
+      this.newRequest.employee = result;
+      console.log(result._id);
       this.fwaRequestService
         .getFwaRequestByEmployee(result._id)
         .subscribe((result2) => {
@@ -77,11 +79,11 @@ export class SubmitFWAComponent implements OnInit {
         });
     });
 
-    this.fwaRequestService.getAllFwaRequest().subscribe((result)=>{
-      console.log(result.fwaRequest.length)
+    this.fwaRequestService.getAllFwaRequest().subscribe((result) => {
+      console.log(result.fwaRequest.length);
       this.newRequest.requestId = result.fwaRequest.length + 1;
-      console.log(this.newRequest.requestId)
-    })
+      console.log(this.newRequest.requestId);
+    });
   }
 
   applyFilter(event: Event) {
@@ -112,11 +114,22 @@ export class SubmitFWAComponent implements OnInit {
       .addFwaRequest(this.newRequest)
       .subscribe((result) => {
         console.log(result);
-        this.refresh();
-        this.snackbar.open('FWA Request submitted Successfully', 'X', {
-          duration: 3000,
+        this.updateEmployeeRequest(result.fwaRequest).then((employee) => {
+          console.log(employee);
+          this.employeeService.updateEmployee(employee).subscribe((result2) => {
+            console.log(result2);
+            this.refresh();
+            this.snackbar.open('FWA Request submitted Successfully', 'X', {
+              duration: 3000,
+            });
+          });
         });
       });
+  }
+
+  async updateEmployeeRequest(request: any) {
+    this.employee.fwaRequestList.push(request);
+    return this.employee;
   }
 
   refresh() {

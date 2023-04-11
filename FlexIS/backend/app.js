@@ -56,6 +56,9 @@ app.delete("/api/fwaRequest/:id", fwaRequestController.deleteFwaRequest);
 app.put("/api/fwaRequest", fwaRequestController.updateFwaRequest);
 app.get("/api/getFwaRequestByEmployee/:id", fwaRequestController.getFwaRequestByEmployee);
 // app.get("/api/getNewestFwaRequest", fwaRequestController.getNewestFwaRequest);
+app.get("/api/getPendingFwaRequestForSupervisor/:id", fwaRequestController.getPendingFwaRequestForSupervisor);
+app.get("/api/getAcceptedFwaRequestForSupervisor/:id", fwaRequestController.getAcceptedFwaRequestForSupervisor);
+app.get("/api/getRejectedFwaRequestForSupervisor/:id", fwaRequestController.getRejectedFwaRequestForSupervisor);
 
 app.post("/api/dailySchedule", dailyScheduleController.addDailySchedule);
 app.get("/api/dailySchedule", dailyScheduleController.getAllDailySchedule);

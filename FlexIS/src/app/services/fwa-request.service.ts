@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FwaRequest } from '../models/fwaRequest';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Employee } from '../models/employee';
 
 @Injectable({
   providedIn: 'root'
@@ -48,9 +49,27 @@ export class FwaRequestService {
     );
   }
 
-  public getNewestFwaRequest(): Observable<any> {
+  // public getNewestFwaRequest(): Observable<any> {
+  //   return this.http.get<any>(
+  //     `http://localhost:3000/api/getNewestFwaRequest`,
+  //   );
+  // }
+
+  public getPendingFwaRequestForSupervisor(employee_id: String): Observable<any> {
     return this.http.get<any>(
-      `http://localhost:3000/api/getNewestFwaRequest`,
+      `http://localhost:3000/api/getPendingFwaRequestForSupervisor/${employee_id}`,
+    );
+  }
+
+  public getAcceptedFwaRequestForSupervisor(employee_id: String): Observable<any> {
+    return this.http.get<any>(
+      `http://localhost:3000/api/getAcceptedFwaRequestForSupervisor/${employee_id}`,
+    );
+  }
+
+  public getRejectedFwaRequestForSupervisor(employee_id: String): Observable<any> {
+    return this.http.get<any>(
+      `http://localhost:3000/api/getRejectedFwaRequestForSupervisor/${employee_id}`,
     );
   }
 }

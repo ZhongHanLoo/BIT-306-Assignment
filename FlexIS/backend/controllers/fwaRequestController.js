@@ -1,4 +1,5 @@
 const FwaRequest = require("../models/fwaRequest");
+const Employee = require("../models/employee");
 
 exports.addFwaRequest = (req, res, next) => {
   const fwaRequest = new FwaRequest({
@@ -65,13 +66,15 @@ exports.updateFwaRequest = (req, res, next) => {
 };
 
 exports.getFwaRequestByEmployee = (req, res, next) => {
-  FwaRequest.find({ employee: req.params.id }).populate("employee").then((documents) => {
-    res.status(200).json({
-      test:req.params.id,
-      message: "FWA requests fetched successfully",
-      fwaRequests: documents,
+  FwaRequest.find({ employee: req.params.id })
+    .populate("employee")
+    .then((documents) => {
+      res.status(200).json({
+        test: req.params.id,
+        message: "FWA requests fetched successfully",
+        fwaRequests: documents,
+      });
     });
-  });
 };
 
 // exports.getNewestFwaRequest = (req, res, next) => {
@@ -82,3 +85,96 @@ exports.getFwaRequestByEmployee = (req, res, next) => {
 //     });
 //   });
 // };
+
+exports.getPendingFwaRequestForSupervisor = (req, res, next) => {
+  Employee.find({
+    _id: req.params.id,
+  })
+    .populate({
+      path: "supervisingEmployee",
+      populate: {
+        path: "fwaRequestList",
+        populate: {
+          path: "employee",
+        },
+      },
+    })
+    .then((documents) => {
+      const fwaRequests = [];
+      documents.forEach((employee) => {
+        employee.supervisingEmployee.forEach((supervisor) => {
+          supervisor.fwaRequestList.forEach((request) => {
+            if (request.status == "pending") {
+              fwaRequests.push(request);
+            }
+          });
+        });
+      });
+      res.status(200).json({
+        message: "Pending FWA requests fetched successfully",
+        fwaRequests: fwaRequests,
+      });
+    });
+};
+
+exports.getAcceptedFwaRequestForSupervisor = (req, res, next) => {
+  Employee.find({
+    _id: req.params.id,
+  })
+    .populate({
+      path: "supervisingEmployee",
+      populate: {
+        path: "fwaRequestList",
+        populate: {
+          path: "employee",
+        },
+      },
+    })
+    .then((documents) => {
+      const fwaRequests = [];
+      documents.forEach((employee) => {
+        employee.supervisingEmployee.forEach((supervisor) => {
+          supervisor.fwaRequestList.forEach((request) => {
+            if (request.status == "accepted") {
+              fwaRequests.push(request);
+            }
+          });
+        });
+      });
+      res.status(200).json({
+        message: "Accepted FWA requests fetched successfully",
+        fwaRequests: fwaRequests,
+      });
+    });
+};
+
+exports.getRejectedFwaRequestForSupervisor = (req, res, next) => {
+  Employee.find({
+    _id: req.params.id,
+  })
+    .populate({
+      path: "supervisingEmployee",
+      populate: {
+        path: "fwaRequestList",
+        populate: {
+          path: "employee",
+        },
+      },
+    })
+    .then((documents) => {
+      const fwaRequests = [];
+      documents.forEach((employee) => {
+        employee.supervisingEmployee.forEach((supervisor) => {
+          supervisor.fwaRequestList.forEach((request) => {
+            if (request.status == "rejected") {
+              fwaRequests.push(request);
+            }
+          });
+        });
+      });
+      res.status(200).json({
+        message: "Rejected FWA requests fetched successfully",
+        fwaRequests: fwaRequests,
+      });
+    });
+};

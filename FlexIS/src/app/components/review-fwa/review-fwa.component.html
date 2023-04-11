@@ -1,36 +1,38 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>FWA Request</mat-card-title>
-    <mat-card-subtitle>
-      view list of subject or create new subject
-    </mat-card-subtitle>
+    <mat-card-subtitle> accept or reject FWA request </mat-card-subtitle>
   </mat-card-header>
   <br />
 
   <mat-card-content>
-
     <mat-accordion class="body-content">
       <mat-expansion-panel
         hideToggle
+        [expanded]="isExpanded"
         class="full-width"
       >
         <mat-expansion-panel-header>
           <mat-panel-title>Pending FWA Request</mat-panel-title>
         </mat-expansion-panel-header>
         <mat-form-field class="full-width">
-          <mat-label>Search Subject</mat-label>
+          <mat-label>Search FWA Request</mat-label>
           <input matInput (keyup)="applyFilterPending($event)" #inputPending />
         </mat-form-field>
         <div class="table">
           <table mat-table [dataSource]="pendingDataSource">
             <ng-container matColumnDef="requestId">
               <th mat-header-cell *matHeaderCellDef>Request ID</th>
-              <td mat-cell *matCellDef="let element">{{ element.requestId }}</td>
+              <td mat-cell *matCellDef="let element">
+                {{ element.requestId }}
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef>Date</th>
-              <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+              <td mat-cell *matCellDef="let element">
+                {{ element.requestDate | date : "shortDate" }}
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="workType">
@@ -40,7 +42,9 @@
 
             <ng-container matColumnDef="employee">
               <th mat-header-cell *matHeaderCellDef>Employee</th>
-              <td mat-cell *matCellDef="let element">{{ element.employee.employeeId }}</td>
+              <td mat-cell *matCellDef="let element">
+                {{ element.employee.employeeId }} - {{ element.employee.name }}
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="action">
@@ -58,7 +62,10 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="pendingDisplayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: pendingDisplayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: pendingDisplayedColumns"
+            ></tr>
 
             <tr class="mat-row" *matNoDataRow>
               <td class="mat-cell" colspan="4">
@@ -67,9 +74,220 @@
             </tr>
           </table>
 
-          <mat-paginator PendingMatPaginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons>
+          <mat-paginator
+            PendingMatPaginator
+            [pageSizeOptions]="[5, 10, 20, 50, 100]"
+            showFirstLastButtons
+          >
           </mat-paginator>
         </div>
+        <br />
+        <p>Request ID: {{ selectedRequest.requestId }}</p>
+        <p>Date: {{ selectedRequest.requestDate | date : "shortDate" }}</p>
+        <p>
+          Employee: {{ selectedRequest.employee.employeeId }} -
+          {{ selectedRequest.employee.name }}
+        </p>
+        <p>Work Type: {{ selectedRequest.workType }}</p>
+
+        <p>Description: {{ selectedRequest.description }}</p>
+        <p>Reason: {{ selectedRequest.reason }}</p>
+
+        <mat-form-field class="full-width">
+          <mat-label>Comment</mat-label>
+          <textarea matInput [(ngModel)]="selectedRequest.comment"></textarea>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          style="margin-right: 10px"
+          (click)="confirmAccept($event)"
+        >
+          Accept
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="confirmReject($event)"
+        >
+          Reject
+        </button>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel hideToggle class="full-width">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Accepted FWA Request</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field class="full-width">
+          <mat-label>Search FWA Request</mat-label>
+          <input
+            matInput
+            (keyup)="applyFilterAccepted($event)"
+            #inputAccepted
+          />
+        </mat-form-field>
+        <div class="table">
+          <table mat-table [dataSource]="acceptedDataSource">
+            <ng-container matColumnDef="requestId">
+              <th mat-header-cell *matHeaderCellDef>Request ID</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.requestId }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.requestDate | date : "shortDate" }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="workType">
+              <th mat-header-cell *matHeaderCellDef>Work Type</th>
+              <td mat-cell *matCellDef="let element">{{ element.workType }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="employee">
+              <th mat-header-cell *matHeaderCellDef>Employee</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.employee.employeeId }} - {{ element.employee.name }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  style="margin-right: 8px"
+                  (click)="showAcceptedFwaRequest(element)"
+                >
+                  View
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="acceptedDisplayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: acceptedDisplayedColumns"
+            ></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">
+                No FWA request that matches "{{ inputAccepted.value }}"
+              </td>
+            </tr>
+          </table>
+
+          <mat-paginator
+            AcceptedMatPaginator
+            [pageSizeOptions]="[5, 10, 20, 50, 100]"
+            showFirstLastButtons
+          >
+          </mat-paginator>
+        </div>
+        <br />
+        <p>Request ID: {{ acceptedRequest.requestId }}</p>
+        <p>Date: {{ acceptedRequest.requestDate | date : "shortDate" }}</p>
+        <p>
+          Employee: {{ acceptedRequest.employee.employeeId }} -
+          {{ acceptedRequest.employee.name }}
+        </p>
+        <p>Work Type: {{ acceptedRequest.workType }}</p>
+
+        <p>Description: {{ acceptedRequest.description }}</p>
+        <p>Reason: {{ acceptedRequest.reason }}</p>
+        <p>Comment: {{ acceptedRequest.comment }}</p>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel hideToggle class="full-width">
+        <mat-expansion-panel-header>
+          <mat-panel-title>Rejected FWA Request</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field class="full-width">
+          <mat-label>Search FWA Request</mat-label>
+          <input
+            matInput
+            (keyup)="applyFilterRejected($event)"
+            #inputRejected
+          />
+        </mat-form-field>
+        <div class="table">
+          <table mat-table [dataSource]="rejectedDataSource">
+            <ng-container matColumnDef="requestId">
+              <th mat-header-cell *matHeaderCellDef>Request ID</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.requestId }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.requestDate | date : "shortDate" }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="workType">
+              <th mat-header-cell *matHeaderCellDef>Work Type</th>
+              <td mat-cell *matCellDef="let element">{{ element.workType }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="employee">
+              <th mat-header-cell *matHeaderCellDef>Employee</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.employee.employeeId }} - {{ element.employee.name }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let element">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  style="margin-right: 8px"
+                  (click)="showRejectedFwaRequest(element)"
+                >
+                  View
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="rejectedDisplayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: rejectedDisplayedColumns"
+            ></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">
+                No FWA request that matches "{{ inputRejected.value }}"
+              </td>
+            </tr>
+          </table>
+
+          <mat-paginator
+            RejectedMatPaginator
+            [pageSizeOptions]="[5, 10, 20, 50, 100]"
+            showFirstLastButtons
+          >
+          </mat-paginator>
+        </div>
+        <br />
+        <p>Request ID: {{ rejectedRequest.requestId }}</p>
+        <p>Date: {{ rejectedRequest.requestDate | date : "shortDate" }}</p>
+        <p>
+          Employee: {{ rejectedRequest.employee.employeeId }} -
+          {{ rejectedRequest.employee.name }}
+        </p>
+        <p>Work Type: {{ rejectedRequest.workType }}</p>
+
+        <p>Description: {{ rejectedRequest.description }}</p>
+        <p>Reason: {{ rejectedRequest.reason }}</p>
+        <p>Comment: {{ rejectedRequest.comment }}</p>
       </mat-expansion-panel>
     </mat-accordion>
   </mat-card-content>
