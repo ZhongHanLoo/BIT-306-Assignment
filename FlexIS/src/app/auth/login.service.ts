@@ -13,8 +13,7 @@ export class LoginService {
   private loggedin = new BehaviorSubject<boolean>(false);
 
   employee = new BehaviorSubject<Employee>({
-    //_id: '6433da6bf60e9199ddc21265',//employee
-    _id: '', //supervisor
+    _id: '',
     employeeId: '',
     password: '',
     name: '',
@@ -32,18 +31,6 @@ export class LoginService {
     const authData = { employeeId, password };
     return this.http.post<any>(`http://localhost:3000/api/login`, authData);
   }
-
-  // public checkLogin(employeeId: String, password: String): any {
-  //   this.login(employeeId, password).subscribe((result) => {
-  //     if (result) {
-  //       this.loggedin = true;
-  //       this.employee = result.employee;
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   });
-  // }
 
   public getEmployee() {
     return this.employee.asObservable();

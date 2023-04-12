@@ -35,7 +35,7 @@
           Employee ID is <strong>required</strong>
         </mat-error>
         <mat-error *ngIf="employeeIdFormControl.hasError('invalidEmployeeId')">
-          Employee ID {{ newUser.employeeId }} already exist
+          Employee ID {{ newUser.employeeId }} <strong>already exist</strong>
         </mat-error>
       </mat-form-field>
 

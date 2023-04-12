@@ -188,15 +188,15 @@ export class ReviewFWAComponent implements OnInit {
   }
 
   getSelectedFwaRequest(request: any) {
-    this.selectedRequest = {...request}
+    this.selectedRequest = { ...request };
   }
 
   showAcceptedFwaRequest(request: any) {
-    this.acceptedRequest = {...request};
+    this.acceptedRequest = { ...request };
   }
 
   showRejectedFwaRequest(request: any) {
-    this.rejectedRequest = {...request};
+    this.rejectedRequest = { ...request };
   }
 
   confirmAccept(event: Event) {
@@ -231,30 +231,33 @@ export class ReviewFWAComponent implements OnInit {
     });
   }
 
-  acceptRequest(){
+  acceptRequest() {
     this.selectedRequest.status = 'accepted';
-    this.fwaRequestService.updateFwaRequest(this.selectedRequest).subscribe((result)=>{
-      console.log(result);
-      this.refresh();
-      this.snackbar.open('FWA Request Accepted', 'X', {
-        duration: 3000,
+    this.fwaRequestService
+      .updateFwaRequest(this.selectedRequest)
+      .subscribe((result) => {
+        console.log(result);
+        this.refresh();
+        this.snackbar.open('FWA Request Accepted', 'X', {
+          duration: 3000,
+        });
       });
-    })
   }
 
-  rejectRequest(){
+  rejectRequest() {
     this.selectedRequest.status = 'rejected';
-    this.fwaRequestService.updateFwaRequest(this.selectedRequest).subscribe((result)=>{
-      console.log(result);
-      this.refresh();
-      this.snackbar.open('FWA Request Rejected', 'X', {
-        duration: 3000,
+    this.fwaRequestService
+      .updateFwaRequest(this.selectedRequest)
+      .subscribe((result) => {
+        console.log(result);
+        this.refresh();
+        this.snackbar.open('FWA Request Rejected', 'X', {
+          duration: 3000,
+        });
       });
-    })
-
   }
 
-  refresh(){
+  refresh() {
     this.ngOnInit();
     this.selectedRequest = {
       _id: '',
@@ -328,6 +331,5 @@ export class ReviewFWAComponent implements OnInit {
         dailyScheduleList: [],
       },
     };
-
   }
 }

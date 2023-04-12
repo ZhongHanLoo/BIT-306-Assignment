@@ -8,10 +8,7 @@ import { LoginService } from 'src/app/auth/login.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  constructor(
-    private loginService: LoginService,
-    private router: Router
-  ) {}
+  constructor(private loginService: LoginService, private router: Router) {}
 
   loggedin = false;
   error = false;
@@ -26,13 +23,11 @@ export class LoginComponent {
         this.router.navigate(['/home']);
       } else {
         this.setError(true);
-
       }
     });
   }
 
   setError(value: boolean) {
     this.error = value;
-    //this.cdr.detectChanges();
   }
 }
