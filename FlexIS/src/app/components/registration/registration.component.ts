@@ -23,6 +23,9 @@ export class RegistrationComponent implements OnInit {
     private snackbar: MatSnackBar
   ) {}
 
+  employeeIdCheck = '0';
+  departmentChosen = false;
+
   departments: Department[] = [];
   newUser: Employee = {
     _id: '',
@@ -39,7 +42,7 @@ export class RegistrationComponent implements OnInit {
     dailyScheduleList: [],
   };
 
-  employeeList: any;
+  employeeList!: Employee[];
   supervisorList!: Employee[];
   selectedSupervisor: Employee = {
     _id: '',
@@ -56,11 +59,23 @@ export class RegistrationComponent implements OnInit {
     dailyScheduleList: [],
   };
 
-  displayedColumns: String[] = ['employeeId', 'name', 'email', 'department', 'position'];
+  displayedColumns: String[] = [
+    'employeeId',
+    'name',
+    'email',
+    'department',
+    'position',
+  ];
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  employeeIdFormControl = new FormControl('', [Validators.required]);
+  employeeIdFormControl = new FormControl(
+    '',
+    Validators.compose([
+      Validators.required,
+      (control: FormControl) => this.employeeIdValidator(control),
+    ])
+  );
   nameFormControl = new FormControl('', [Validators.required]);
   positionFormControl = new FormControl('', [Validators.required]);
   emailFormControl = new FormControl('', [Validators.required]);
@@ -71,10 +86,23 @@ export class RegistrationComponent implements OnInit {
     });
 
     this.employeeService.getAllEmployee().subscribe((result) => {
+      console.log(result.employees);
       this.employeeList = result.employees;
       this.dataSource = new MatTableDataSource<any>(this.employeeList);
       this.dataSource.paginator = this.paginator;
     });
+  }
+
+  employeeIdValidator(control: FormControl): { [key: string]: any } | null {
+    const employeeId = control.value;
+    if (this.employeeList) {
+      for (let employee of this.employeeList) {
+        if (employeeId === employee.employeeId) {
+          return { invalidEmployeeId: true };
+        }
+      }
+    }
+    return null;
   }
 
   applyFilter(event: Event) {
@@ -89,8 +117,8 @@ export class RegistrationComponent implements OnInit {
     this.employeeService
       .getSupervisorByDepartment(this.newUser.department._id)
       .subscribe((result) => {
-        console.log(result);
         this.supervisorList = result.employees;
+        this.departmentChosen = true;
       });
   }
 

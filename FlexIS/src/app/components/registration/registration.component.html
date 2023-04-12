@@ -34,6 +34,9 @@
         <mat-error *ngIf="employeeIdFormControl.hasError('required')">
           Employee ID is <strong>required</strong>
         </mat-error>
+        <mat-error *ngIf="employeeIdFormControl.hasError('invalidEmployeeId')">
+          Employee ID {{ newUser.employeeId }} already exist
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field class="full-width">
@@ -94,7 +97,13 @@
       </mat-form-field>
 
       <button
-        [disabled]="emailFormControl.invalid || nameFormControl.invalid"
+        [disabled]="
+          emailFormControl.invalid ||
+          nameFormControl.invalid ||
+          employeeIdFormControl.invalid ||
+          positionFormControl.invalid ||
+          !departmentChosen
+        "
         mat-raised-button
         color="primary"
         (click)="confirmRegister($event)"

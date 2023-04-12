@@ -42,6 +42,7 @@ app.delete("/api/employee/:id", employeeController.deleteEmployee);
 app.put("/api/employee/", employeeController.updateEmployee);
 app.get("/api/getSupervisorByDepartment/:id", employeeController.getSupervisorByDepartment);
 app.post("/api/login/", employeeController.login);
+app.get("/api/getEmployeeById/:id", employeeController.getEmployeeById);
 
 app.post("/api/department", departmentController.addDepartment);
 app.get("/api/department", departmentController.getAllDepartment);

@@ -87,3 +87,12 @@ exports.login = (req, res, next) => {
     });
   })
 }
+
+exports.getEmployeeById = (req, res, next) => {
+  Employee.findOne({ employeeId: req.params.id}).then((document) => {
+    res.status(200).json({
+      message: "Employees fetched successfully",
+      employee: document,
+    });
+  });
+};

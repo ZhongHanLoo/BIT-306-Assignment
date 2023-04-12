@@ -1,18 +1,31 @@
-<mat-nav-list>
+<mat-nav-list *ngIf="employee.userType === 'Admin'">
   <mat-divider></mat-divider>
   <a mat-list-item routerLink="/home">Home</a>
   <mat-divider></mat-divider>
   <a mat-list-item routerLink="/registration">Registration</a>
   <mat-divider></mat-divider>
-  <a mat-list-item routerLink="/submitFwa">FWA Request</a>
+  <a mat-list-item routerLink="/fwaAnalytics">FWA Analytics</a>
+  <mat-divider></mat-divider>
+</mat-nav-list>
+
+<mat-nav-list *ngIf="employee.userType === 'Supervisor'">
+  <mat-divider></mat-divider>
+  <a mat-list-item routerLink="/home">Home</a>
   <mat-divider></mat-divider>
   <a mat-list-item routerLink="/reviewFwa">Review FWA</a>
-  <mat-divider></mat-divider>
-  <a mat-list-item routerLink="/updateSchedule">Schedule</a>
   <mat-divider></mat-divider>
   <a mat-list-item routerLink="/reviewSchedule">Review Schedule</a>
   <mat-divider></mat-divider>
   <a mat-list-item routerLink="/fwaAnalytics">FWA Analytics</a>
   <mat-divider></mat-divider>
+</mat-nav-list>
 
+<mat-nav-list *ngIf="employee.userType === 'Employee'">
+  <mat-divider></mat-divider>
+  <a mat-list-item routerLink="/home">Home</a>
+  <mat-divider></mat-divider>
+  <a mat-list-item routerLink="/submitFwa">FWA Request</a>
+  <mat-divider></mat-divider>
+  <a mat-list-item routerLink="/updateSchedule">Schedule</a>
+  <mat-divider></mat-divider>
 </mat-nav-list>

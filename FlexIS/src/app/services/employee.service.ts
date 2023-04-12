@@ -49,4 +49,10 @@ export class EmployeeService {
       `http://localhost:3000/api/getSupervisorByDepartment/${departmentId}`,
     );
   }
+
+  public getEmployeeById(employee: Employee): Observable<any> {
+    return this.http.get<any>(
+      `http://localhost:3000/api/getEmployeeById/${employee.employeeId}`,
+    );
+  }
 }
